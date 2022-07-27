@@ -34,26 +34,30 @@ export const listProducts =
     max = 0,
     rating = 0,
   }) =>
-  async (dispatch) => {
-    dispatch({
-      type: PRODUCT_LIST_REQUEST,
-    });
-    try {
-      const { data } = await Axios.get(
-        `/api/products?pageNumber=${pageNumber}&seller=${seller}&name=${name}&category=${category}&min=${min}&max=${max}&rating=${rating}&order=${order}`
-      );
-      dispatch({ type: PRODUCT_LIST_SUCCESS, payload: data });
-    } catch (error) {
-      dispatch({ type: PRODUCT_LIST_FAIL, payload: error.message });
-    }
-  };
+    async (dispatch) => {
+      dispatch({
+        type: PRODUCT_LIST_REQUEST,
+      });
+      try {
+        /* `/api/products?pageNumber=${pageNumber}&seller=${seller}&name=${name}&category=${category}&min=${min}&max=${max}&rating=${rating}&order=${order}`  */
+        let { data } = await Axios.get('https://fakestoreapi.com/products');
+        data = {
+          products: data,
+          page: 1,
+          pages: 1
+        }
+        dispatch({ type: PRODUCT_LIST_SUCCESS, payload: data });
+      } catch (error) {
+        dispatch({ type: PRODUCT_LIST_FAIL, payload: error.message });
+      }
+    };
 
 export const listProductCategories = () => async (dispatch) => {
   dispatch({
     type: PRODUCT_CATEGORY_LIST_REQUEST,
   });
   try {
-    const { data } = await Axios.get(`/api/products/categories`);
+    const { data } = await Axios.get('https://fakestoreapi.com/products/categories');
     dispatch({ type: PRODUCT_CATEGORY_LIST_SUCCESS, payload: data });
   } catch (error) {
     dispatch({ type: PRODUCT_CATEGORY_LIST_FAIL, payload: error.message });
@@ -63,7 +67,9 @@ export const listProductCategories = () => async (dispatch) => {
 export const detailsProduct = (productId) => async (dispatch) => {
   dispatch({ type: PRODUCT_DETAILS_REQUEST, payload: productId });
   try {
-    const { data } = await Axios.get(`/api/products/${productId}`);
+    const { data } = await Axios.get(`https://fakestoreapi.com/products/${productId}`);
+    data.countInStock = 8;
+    data.name = data.title
     dispatch({ type: PRODUCT_DETAILS_SUCCESS, payload: data });
   } catch (error) {
     dispatch({
