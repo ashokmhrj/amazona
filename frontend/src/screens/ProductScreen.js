@@ -14,7 +14,7 @@ export default function ProductScreen(props) {
   const params = useParams();
   const { id: productId } = params;
 
-  const [qty, setQty] = useState(1);
+  const [qty, setQty] = useState(2);
   const productDetails = useSelector((state) => state.productDetails);
   const { loading, error, product } = productDetails;
   const userSignin = useSelector((state) => state.userSignin);
@@ -38,6 +38,8 @@ export default function ProductScreen(props) {
       dispatch({ type: PRODUCT_REVIEW_CREATE_RESET });
     }
     dispatch(detailsProduct(productId));
+
+
   }, [dispatch, productId, successReviewCreate]);
   const addToCartHandler = () => {
     navigate(`/cart/${productId}?qty=${qty}`);
@@ -76,8 +78,8 @@ export default function ProductScreen(props) {
                 </li>
                 <li>
                   <Rating
-                    rating={product.rating}
-                    numReviews={product.numReviews}
+                    rating={5}
+                    numReviews={25}
                   ></Rating>
                 </li>
                 <li>Pirce : ${product.price}</li>
@@ -93,13 +95,13 @@ export default function ProductScreen(props) {
                   <li>
                     Seller{' '}
                     <h2>
-                      <Link to={`/seller/${product.seller._id}`}>
-                        {product.seller.seller.name}
+                      <Link to={'#'}>
+                        {'ASK'}
                       </Link>
                     </h2>
                     <Rating
-                      rating={product.seller.seller.rating}
-                      numReviews={product.seller.seller.numReviews}
+                      rating={5}
+                      numReviews={25}
                     ></Rating>
                   </li>
                   <li>
@@ -155,7 +157,7 @@ export default function ProductScreen(props) {
               </div>
             </div>
           </div>
-          <div>
+          {product.reviews && <div>
             <h2 id="reviews">Reviews</h2>
             {product.reviews.length === 0 && (
               <MessageBox>There is no review</MessageBox>
@@ -220,7 +222,7 @@ export default function ProductScreen(props) {
                 )}
               </li>
             </ul>
-          </div>
+          </div>}
         </div>
       )}
     </div>
